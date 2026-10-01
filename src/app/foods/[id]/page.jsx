@@ -1,9 +1,22 @@
 import Image from "next/image";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 
 export function generateStaticParams() {
   return [{ id: "52841" }, { id: "52945" }, { id: "53071" }];
+}
+
+export async function generateMetadata({ params }) {
+  const { id } = await params;
+
+  const res = await fetch(
+    `https://taxi-kitchen-api.vercel.app/api/v1/foods/${id}`,
+  );
+  const { details = {} } = await res.json();
+
+  return {
+    title: details.title,
+  };
 }
 
 const getSingleFood = async (id) => {
@@ -20,17 +33,32 @@ const getSingleFood = async (id) => {
   }
 };
 
-export const metadata = {
-  title: "Food Details",
-  description: "Food Details",
-};
-
 const FoodDetails = async ({ params }) => {
   const { id } = await params;
   const food = await getSingleFood(id);
 
-  if (!food) {
-    notFound();
+  if (!food || !food.title) {
+    redirect("/foods");
+    // return (
+    //   <div className="flex flex-col items-center justify-center min-h-[60vh] px-10 text-center">
+    //     <div className="bg-white border border-gray-200 rounded-2xl p-8 shadow-sm max-w-md w-full">
+    //       <span className="text-6xl mb-3 block">🍽️</span>
+    //       <h2 className="text-3xl font-bold text-gray-900 mb-2">
+    //         No Food Found
+    //       </h2>
+    //       <p className="text-base text-gray-500 mb-6">
+    //         We couldn&apos;t find the food item you are looking for. It might
+    //         have been removed or doesn&apos;t exist.
+    //       </p>
+    //       <Link
+    //         href="/foods"
+    //         className="inline-block px-5 py-2.5 bg-indigo-600 text-white font-medium text-sm rounded-xl hover:bg-indigo-700 transition-colors shadow-sm"
+    //       >
+    //         Back to All Foods
+    //       </Link>
+    //     </div>
+    //   </div>
+    // );
   }
 
   return (

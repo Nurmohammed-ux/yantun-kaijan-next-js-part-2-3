@@ -1,4 +1,4 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Montserrat } from "next/font/google";
 import "./globals.css";
 import Logo from "@/components/Logo";
 import Link from "next/link";
@@ -14,8 +14,16 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const montserrat = Montserrat({
+  weight: ["400", "500", "600", "700", "800"],
+  subsets: ["latin"],
+});
+
 export const metadata = {
-  title: "Yantun Khaijan",
+  title: {
+    default: "Yantun Khaijan",
+    template: "%s | Yantun Khaijan",
+  },
   description: "Best Restaurant in Dhaka",
 };
 
@@ -23,17 +31,20 @@ export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${montserrat.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col container mx-auto">
         <header className="px-5 pt-8 pb-3 flex justify-between items-center">
           <Logo />
           <div className="space-x-6">
-            <Link href={"/foods"} className="btn">
-              Food
+            <Link prefetch={false} href={"/foods"} className="btn">
+              Foods
             </Link>
             <Link href={"/reviews"} className="btn">
               Reviews
+            </Link>
+            <Link href={"/feedback"} className="btn">
+              Feedback
             </Link>
           </div>
         </header>

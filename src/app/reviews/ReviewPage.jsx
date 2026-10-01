@@ -2,6 +2,11 @@
 import { useEffect, useState } from "react";
 import ReviewCard from "@/components/cards/ReviewCard";
 import Loading from "./loading";
+import { Noto_Sans } from "next/font/google";
+
+const notoSans = Noto_Sans({
+  weight: ["400"],
+});
 
 const ReviewsPage = () => {
   const [reviews, setReviews] = useState([]);
@@ -21,13 +26,13 @@ const ReviewsPage = () => {
   }, []);
 
   return (
-    <div className="px-6 py-12">
+    <div className={`${notoSans.className} px-6 py-12`}>
       {/* Page Header */}
       <div className="text-center mb-12">
         <span className="text-sm font-semibold text-indigo-600 uppercase tracking-widest bg-indigo-50 px-3 py-1 rounded-full">
           Customer Feedback
         </span>
-        <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 mt-3 mb-2">
+        <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mt-3 mb-2">
           What Our Customers Say
         </h1>
         <p className="text-gray-600 text-lg">
